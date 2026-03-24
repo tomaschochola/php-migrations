@@ -24,10 +24,10 @@ use function is_callable;
 /**
  * @no-named-arguments
  */
-readonly class PdoMigrator
+readonly class Migrator
 {
     /**
-     * @var callable(string): mixed
+     * @var callable(string): (callable(): void)
      */
     public readonly mixed $lock;
 
@@ -38,9 +38,9 @@ readonly class PdoMigrator
     public readonly PdoQuery $query;
 
     /**
-     * @param callable(string): mixed $lock
+     * @param callable(string): (callable(): void) $lock
      */
-    public function __construct(PdoQuery $query, LoggerInterface $logger, MigrationInterface $migration, mixed $lock)
+    public function __construct(PdoQuery $query, LoggerInterface $logger, MigrationInterface $migration, callable $lock)
     {
         $this->query = $query;
         $this->logger = $logger;
@@ -51,16 +51,14 @@ readonly class PdoMigrator
     /**
      * @param iterable<mixed, MigrationInterface> $migrations
      */
-    public function forward(iterable $migrations): void
+    public function migrate(iterable $migrations): void
     {
-        assert(is_callable($this->lock));
-
         $unlock = ($this->lock)('migrations');
 
-        assert(is_callable($unlock));
-
         try {
-            $this->init();
+            foreach ($this->migration->migrate() as $sql) {
+                $this->query->run($sql);
+            }
 
             foreach ($migrations as $migration) {
                 $selector = $migration->selector();
@@ -83,13 +81,6 @@ readonly class PdoMigrator
             }
         } finally {
             $unlock();
-        }
-    }
-
-    private function init(): void
-    {
-        foreach ($this->migration->migrate() as $sql) {
-            $this->query->run($sql);
         }
     }
 }
