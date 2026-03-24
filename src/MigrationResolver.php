@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-namespace TomasChochola\Mysql;
+namespace TomasChochola\Migrations;
 
 use Iterator;
 use NoDiscard;

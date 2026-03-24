@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "TomasChochola\\Mysql\\": "./src"
+      "TomasChochola\\Migrations\\": "./src"
     }
   },
   "autoload-dev": {
@@ -26,24 +26,24 @@
     "process-timeout": 0,
     "sort-packages": true
   },
-  "description": "tomaschochola/php-mysql",
+  "description": "tomaschochola/php-migrations",
   "funding": [
     {
       "type": "github",
       "url": "https://github.com/sponsors/tomaschochola"
     }
   ],
-  "homepage": "https://github.com/tomaschochola/php-mysql",
+  "homepage": "https://github.com/tomaschochola/php-migrations",
   "keywords": [
     "tomaschochola",
     "TomasChochola",
     "Tomas Chochola",
     "Tomáš Chochola",
-    "php-mysql"
+    "php-migrations"
   ],
   "license": "CC-BY-ND-4.0",
   "minimum-stability": "dev",
-  "name": "tomaschochola/php-mysql",
+  "name": "tomaschochola/php-migrations",
   "prefer-stable": true,
   "readme": "./README.md",
   "repositories": [
@@ -59,11 +59,10 @@
     }
   ],
   "require": {
-    "ext-pdo": "*",
-    "ext-pdo_mysql": "*",
     "php": "^8.5.0",
     "psr/container": "^2.0",
-    "psr/log": "^3.0"
+    "psr/log": "^3.0",
+    "tomaschochola/php-pdo": "^1.0@dev"
   },
   "require-dev": {
     "ext-intl": "*",
@@ -76,10 +75,10 @@
     "tomaschochola/php-tooling-phpstan-config": "^1.0@dev"
   },
   "support": {
-    "docs": "https://github.com/tomaschochola/php-mysql",
+    "docs": "https://github.com/tomaschochola/php-migrations",
     "email": "tomaschochola@tomaschochola.cz",
-    "issues": "https://github.com/tomaschochola/php-mysql/issues",
-    "source": "https://github.com/tomaschochola/php-mysql.git"
+    "issues": "https://github.com/tomaschochola/php-migrations/issues",
+    "source": "https://github.com/tomaschochola/php-migrations.git"
   },
   "type": "library"
 }
