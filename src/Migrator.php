@@ -18,9 +18,6 @@ namespace TomasChochola\Migrations;
 use Psr\Log\LoggerInterface;
 use TomasChochola\Pdo\PdoQuery;
 
-use function assert;
-use function is_callable;
-
 /**
  * @no-named-arguments
  */
