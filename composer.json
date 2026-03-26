@@ -60,13 +60,13 @@
     {
       "no-api": true,
       "type": "git",
-      "url": "https://github.com/tomaschochola/php-pdo.git"
+      "url": "https://github.com/tomaschochola/php-database.git"
     }
   ],
   "require": {
     "php": "^8.5.0",
     "psr/log": "^3.0",
-    "tomaschochola/php-pdo": "^1.0@dev"
+    "tomaschochola/php-database": "^1.0@dev"
   },
   "require-dev": {
     "ext-intl": "*",

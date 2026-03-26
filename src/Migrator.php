@@ -15,69 +15,65 @@ declare(strict_types=1);
 
 namespace TomasChochola\Migrations;
 
+use Override;
 use Psr\Log\LoggerInterface;
-use TomasChochola\Pdo\PdoQuery;
+use TomasChochola\Pdo\LockerInterface;
+use TomasChochola\Pdo\QueryInterface;
 
 /**
  * @no-named-arguments
  */
-readonly class Migrator
+readonly class Migrator implements MigratorInterface
 {
-    /**
-     * @var callable(string): (callable(): void)
-     */
-    public readonly mixed $lock;
+    public readonly LockerInterface $locker;
 
     public readonly LoggerInterface $logger;
 
-    public readonly MigrationInterface $migration;
+    public readonly MigrationsInterface $migrations;
+    public readonly QueryInterface $query;
 
-    public readonly PdoQuery $query;
-
-    /**
-     * @param callable(string): (callable(): void) $lock
-     */
-    public function __construct(PdoQuery $query, LoggerInterface $logger, MigrationInterface $migration, callable $lock)
+    public function __construct(QueryInterface $query, LoggerInterface $logger, MigrationsInterface $migrations, LockerInterface $locker)
     {
         $this->query = $query;
         $this->logger = $logger;
-        $this->migration = $migration;
-        $this->lock = $lock;
+        $this->migrations = $migrations;
+        $this->locker = $locker;
     }
 
     /**
      * @param iterable<mixed, MigrationInterface> $migrations
      */
+    #[Override]
     public function migrate(iterable $migrations): void
     {
-        $unlock = ($this->lock)('migrations');
+        $this->logger->info('migrator.start');
+
+        $lock = $this->locker->lock('migrations', 3600);
 
         try {
-            foreach ($this->migration->migrate() as $sql) {
-                $this->query->run($sql);
-            }
+            $this->migrations->init();
 
             foreach ($migrations as $migration) {
                 $selector = $migration->selector();
-                $table = $this->migration->selector();
-                $count = $this->query->int('SELECT COUNT(*) FROM ' . $table . ' WHERE selector = ?', [$selector]);
 
-                $this->logger->info('migration.start', ['selector' => $selector]);
-
-                if ($count > 0) {
+                if ($this->migrations->has($selector)) {
                     $this->logger->info('migration.skip', ['selector' => $selector]);
                 } else {
+                    $this->logger->info('migration.start', ['selector' => $selector]);
+
                     foreach ($migration->migrate() as $sql) {
-                        $this->logger->info('migration.sql', ['selector' => $selector, 'sql' => $sql]);
+                        $this->logger->notice('migration.sql', ['selector' => $selector, 'sql' => $sql]);
                         $this->query->run($sql);
                     }
 
-                    $this->query->run('INSERT INTO ' . $table . ' (selector) VALUES (?)', [$selector]);
+                    $this->migrations->mark($selector);
                     $this->logger->info('migration.done', ['selector' => $selector]);
                 }
             }
         } finally {
-            $unlock();
+            $lock->unlock();
         }
+
+        $this->logger->info('migrator.done');
     }
 }
