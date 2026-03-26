@@ -30,6 +30,7 @@ readonly class Migrator implements MigratorInterface
     public readonly LoggerInterface $logger;
 
     public readonly MigrationsInterface $migrations;
+
     public readonly QueryInterface $query;
 
     public function __construct(QueryInterface $query, LoggerInterface $logger, MigrationsInterface $migrations, LockerInterface $locker)
@@ -48,7 +49,7 @@ readonly class Migrator implements MigratorInterface
     {
         $this->logger->info('migrator.start');
 
-        $lock = $this->locker->lock('migrations', 3600);
+        $lock = $this->locker->lock('migrations', 3_600);
 
         try {
             $this->migrations->init();
