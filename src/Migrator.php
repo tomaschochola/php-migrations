@@ -25,13 +25,13 @@ use TomasChochola\Pdo\QueryInterface;
  */
 readonly class Migrator implements MigratorInterface
 {
-    public readonly LockerInterface $locker;
+    private readonly LockerInterface $locker;
 
-    public readonly LoggerInterface $logger;
+    private readonly LoggerInterface $logger;
 
-    public readonly MigrationsInterface $migrations;
+    private readonly MigrationsInterface $migrations;
 
-    public readonly QueryInterface $query;
+    private readonly QueryInterface $query;
 
     public function __construct(QueryInterface $query, LoggerInterface $logger, MigrationsInterface $migrations, LockerInterface $locker)
     {
