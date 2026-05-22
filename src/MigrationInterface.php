@@ -26,9 +26,9 @@ interface MigrationInterface
     /**
      * @return iterable<mixed, Stringable|string>
      */
-    #[NoDiscard]
+    #[NoDiscard()]
     public function migrate(): iterable;
 
-    #[NoDiscard]
+    #[NoDiscard()]
     public function selector(): string;
 }

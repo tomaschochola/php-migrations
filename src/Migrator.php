@@ -23,9 +23,9 @@ use Psr\Log\LoggerInterface;
  */
 readonly class Migrator implements MigratorInterface
 {
-    private readonly LoggerInterface $logger;
+    private LoggerInterface $logger;
 
-    private readonly MigrationsInterface $migrations;
+    private MigrationsInterface $migrations;
 
     public function __construct(LoggerInterface $logger, MigrationsInterface $migrations)
     {
@@ -36,7 +36,7 @@ readonly class Migrator implements MigratorInterface
     /**
      * @param iterable<mixed, MigrationInterface> $migrations
      */
-    #[Override]
+    #[Override()]
     public function migrate(iterable $migrations): void
     {
         $this->logger->info('migrator.start');

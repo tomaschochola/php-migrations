@@ -25,9 +25,9 @@ interface MigrationsInterface
 {
     public function end(): void;
 
-    public function execute(Stringable|string $sql): void;
+    public function execute(Stringable | string $sql): void;
 
-    #[NoDiscard]
+    #[NoDiscard()]
     public function has(string $selector): bool;
 
     public function mark(string $selector): void;
