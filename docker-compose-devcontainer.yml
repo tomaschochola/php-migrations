@@ -1,3 +1,4 @@
+name: 'php-migrations-devcontainer'
 networks:
   devcontainer:
     internal: false
