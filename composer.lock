@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6cb86c47aa5c597b6a8cb6dd9824690",
+    "content-hash": "258b030022b89a44f66f253ae23034f2",
     "packages": [
         {
             "name": "psr/log",
@@ -6631,7 +6631,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
         "tomaschochola/tooling-php-cs-fixer": 20,
